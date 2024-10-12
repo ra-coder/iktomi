@@ -13,13 +13,14 @@ db TODO
 dev TODO
  - [X] iktomi swagger
  - [x] fast api 
- - [ ] postgres alembic + alchemy integration
- - [ ] create account form saml provider
+ - [X] postgres alembic + alchemy integration
  - [ ] pre commit
- - [ ] vk id
+ - [X] vk id
    - [x] register dev account
    - [x] add to site
-   - [ ] add user to db on login
+   - [X] add user to db on login
+   - [ ] check if user exists + glue accounts
+ - [ ] create account form saml provider 
  
 function backlog
  - [ ] логин
