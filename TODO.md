@@ -2,7 +2,7 @@ deops TODO
 
  - [x] gitlab repo
  - [x] iktomi server in yandex cloud
- - [ ] iktomi dns 
+ - [X] iktomi dns 
  - [ ] deploy from gitlab actions
  - [ ] iktomi postgres db 
 
