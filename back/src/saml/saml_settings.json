@@ -1,0 +1,29 @@
+{
+  "strict": true,
+  "debug": true,
+  "sp": {
+    "entityId": "https://iktomi.pro/api/salm/metadata/",
+    "assertionConsumerService": {
+      "url": "https://iktomi.pro/api/salm/acs/",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+    },
+    "singleLogoutService": {
+      "url": "https://iktomi.pro/api/saml/sls/",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    },
+    "x509cert": "",
+    "privateKey": ""
+  },
+  "idp": {
+    "entityId": "https://accounts.google.com/o/saml2?idpid=your-idp-id",
+    "singleSignOnService": {
+      "url": "https://accounts.google.com/o/saml2/idp?idpid=your-idp-id",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    },
+    "singleLogoutService": {
+      "url": "https://accounts.google.com/logout",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    },
+    "x509cert": "Paste your IdP certificate here"
+  }
+}
