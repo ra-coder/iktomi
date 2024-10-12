@@ -1,3 +1,3 @@
 FROM nginx:alpine
 COPY ./html /usr/share/nginx/html
-COPY ./nginx /etc/nginx/conf.d
+COPY ./nginx/iktomi.conf /etc/nginx/conf.d/.
