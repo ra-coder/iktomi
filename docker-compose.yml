@@ -14,7 +14,8 @@ services:
     networks:
       - iktomi
     depends_on:
-      - certbot
+      # - certbot
+      - iktomi-back
 
   certbot:
     image: iktomi-certbot:latest
@@ -28,6 +29,32 @@ services:
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do sleep 12h & wait $${!}; certbot renew; done'"
     networks:
       - iktomi
+
+  iktomi-back:
+    image: iktomi-back:latest
+    container_name: iktomi-back
+    build:
+      context: back
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - iktomi
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    container_name: iktomi-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: iktomi
+      POSTGRES_PASSWORD: iktomi
+      POSTGRES_DB: iktomi
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
 #  app:
 #    image: your-app-image:latest
@@ -43,3 +70,4 @@ networks:
 volumes:
   certbot-data:
   letsencrypt-data:
+  postgres_data:
