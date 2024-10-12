@@ -1,7 +1,7 @@
 services:
   iktomi-front:
     image: iktomi-front:latest
-    container_name: iktomi-
+    container_name: iktomi
     build:
       dockerfile: front/Dockerfile
     ports:
