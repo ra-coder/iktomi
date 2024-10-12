@@ -24,10 +24,10 @@ jobs:
         "mkdir -p ~/app"
         scp -o StrictHostKeyChecking=no -r * ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:~/app
 
-    - name: Deploy Docker Container
+    - name: Deploy Front Docker Container
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-          cd ~/front
+          cd ~/app/front
           docker build -t iktomi-front .
           docker stop iktomi-front || true
           docker rm iktomi-front || true
