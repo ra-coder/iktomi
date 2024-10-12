@@ -13,10 +13,15 @@ services:
       - certbot-data:/var/www/certbot
     networks:
       - iktomi
+    depends_on:
+      - certbot
 
   certbot:
-    image: certbot/certbot
+    image: iktomi-certbot:latest
     container_name: certbot
+    build:
+      context: front
+      dockerfile: certbot.Dockerfile
     volumes:
       - letsencrypt-data:/etc/letsencrypt
       - certbot-data:/var/www/certbot
