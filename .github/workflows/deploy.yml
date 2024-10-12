@@ -20,14 +20,14 @@ jobs:
 
     - name: Copy Files to Server
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} \
-        "mkdir -p ~/app"
-        scp -o StrictHostKeyChecking=no -r * ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:~/app
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "rm -r ~/github-deploy"
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "mkdir -p ~/github-deploy"
+        scp -o StrictHostKeyChecking=no -r * ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:~/github-deploy
 
     - name: Deploy Front Docker Container
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-          cd ~/app
+          cd ~/github-deploy
           docker compose build iktomi-front
           docker compose up -d
         EOF
