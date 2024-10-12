@@ -16,4 +16,8 @@ dev TODO
  - [ ] postgres alembic + alchemy integration
  - [ ] create account form saml provider
  - [ ] pre commit
+ - [ ] vk id
+   - [ ] register dev account
+   - [ ] add to site
+   - [ ] add user to db on login
  
