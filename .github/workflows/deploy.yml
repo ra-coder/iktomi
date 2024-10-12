@@ -27,9 +27,7 @@ jobs:
     - name: Deploy Front Docker Container
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-          cd ~/app/front
-          docker build -t iktomi-front .
-          docker stop iktomi-front || true
-          docker rm iktomi-front || true
-          docker run -d --name iktomi-front -p 80:80 iktomi-front
+          cd ~/app
+          docker compose build iktomi-front
+          docker compose up -d
         EOF

@@ -1,0 +1,39 @@
+services:
+  iktomi-front:
+    image: iktomi-front:latest
+    container_name: iktomi-
+    build:
+      dockerfile: front/Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - letsencrypt-data:/etc/letsencrypt
+      - certbot-data:/var/www/certbot
+    networks:
+      - iktomi
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - letsencrypt-data:/etc/letsencrypt
+      - certbot-data/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do sleep 12h & wait $${!}; certbot renew; done'"
+    networks:
+      - iktomi
+
+#  app:
+#    image: your-app-image:latest
+#    container_name: your-app
+#    environment:
+#      - PORT=8000  # Or any port your app uses
+#    networks:
+#      - webnet
+
+networks:
+  iktomi:
+
+volumes:
+  certbot-data:
+  letsencrypt-data:
