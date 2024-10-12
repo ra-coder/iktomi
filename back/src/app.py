@@ -5,6 +5,7 @@ app = FastAPI(
     title="Iktomi API",
     description="This is a simple FastAPI application.",
     version="0.0.1",
+    openapi_url="/api/openapi.json",
     docs_url="/api/docs",
     redoc_url="/api/redoc",
 )
