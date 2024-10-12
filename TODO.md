@@ -4,13 +4,16 @@ deops TODO
  - [x] iktomi server in yandex cloud
  - [X] iktomi dns 
  - [x] deploy from gitlab actions
+ - [X] firewall
 
 db TODO
- - [ ] iktomi postgres db
+ - [X] iktomi postgres db
  - [ ] search for NFT + crypto db
 
 dev TODO
- - [ ] iktomi swagger
+ - [X] iktomi swagger
+ - [x] fast api 
+ - [ ] postgres alembic + alchemy integration
+ - [ ] create account form saml provider
  - [ ] pre commit
- - [ ] create account form
- - [ ] saml ??
+ 
