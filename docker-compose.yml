@@ -3,8 +3,8 @@ services:
     image: iktomi-front:latest
     container_name: iktomi-front
     build:
-      dockerfile: front/Dockerfile
       context: front
+      dockerfile: Dockerfile
     ports:
       - "80:80"
       - "443:443"
