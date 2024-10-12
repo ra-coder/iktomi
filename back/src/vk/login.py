@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 
-from db.connect import get_db_session
+from db.connect import SessionLocal, get_db_session
 from db.oauth import OAuthAccount
 
 vk_login_router = APIRouter()
@@ -27,7 +27,7 @@ class SimpleResponse(BaseModel):
 @vk_login_router.post("/api/vk/login/tokens")
 def read_root(
     data: VKTokens,
-    db_session: Depends(get_db_session)
+    db_session: SessionLocal = Depends(get_db_session),
 ) -> SimpleResponse:
     # TODO search for existing user if don't exists -> create new
     # TODO create user
