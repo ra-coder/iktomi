@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 
+from vk.login import vk_login_router
+
 # Create FastAPI instance
 app = FastAPI(
     title="Iktomi API",
@@ -9,6 +11,8 @@ app = FastAPI(
     docs_url="/api/docs",
     redoc_url="/api/redoc",
 )
+
+app.include_router(vk_login_router)
 
 
 # Root endpoint

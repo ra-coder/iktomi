@@ -65,13 +65,33 @@
       });
     }
 
-    function vkidOnSuccess(data) {
-      // Обработка полученного результата
-    }
+  function vkidOnSuccess(data) {
+    console.log('Login Success:', data);  // Logs the response for debugging
 
-    function vkidOnError(error) {
-      // Обработка ошибки
-    }
+    // Define your endpoint URL to which data should be sent
+    const endpoint = 'https://iktomi.pro/api/vk/login/tokens';
+
+    // Send the response data as a POST request
+    fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(result => {
+      console.log('Data successfully sent:', result);
+    })
+    .catch(error => {
+      console.error('Error posting data:', error);
+    });
+  }
+
+  // Error handler
+  function vkidOnError(error) {
+    console.error('Login Error:', error);  // Logs the error for debugging
+  }
   </script>
 </div></body>
 </html>
