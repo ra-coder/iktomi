@@ -16,17 +16,17 @@ jobs:
     - name: Set up SSH Agent
       uses: webfactory/ssh-agent@v0.9.0
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        ssh-private-key: ${{ deploy.SSH_PRIVATE_KEY }}
 
     - name: Copy Files to Server
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} \
+        ssh -o StrictHostKeyChecking=no ${{ deploy.SERVER_USER }}@${{ deploy.SERVER_IP }} \
         "mkdir -p ~/app"
-        scp -o StrictHostKeyChecking=no -r * ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:~/app
+        scp -o StrictHostKeyChecking=no -r * ${{ deploy.SERVER_USER }}@${{ deploy.SERVER_IP }}:~/app
 
     - name: Deploy Docker Container
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+        ssh -o StrictHostKeyChecking=no ${{ deploy.SERVER_USER }}@${{ deploy.SERVER_IP }} << 'EOF'
           cd ~/front
           docker build -t iktomi-front .
           docker stop iktomi-front || true
