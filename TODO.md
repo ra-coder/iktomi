@@ -8,5 +8,6 @@ deops TODO
 
 dev TODO
  - [ ] iktomi swagger
+ - [ ] pre commit
  - [ ] create account form
  - [ ] saml ??
