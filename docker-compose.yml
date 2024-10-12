@@ -43,7 +43,7 @@ services:
     depends_on:
       - postgres
 
-  iktomi-db:
+  iktomi-postgres:
     image: postgres:latest
     container_name: iktomi-postgres
     restart: always
