@@ -20,7 +20,7 @@ jobs:
 
     - name: Copy Files to Server
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "rm -r ~/github-deploy"
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "rm -rf ~/github-deploy || true"
         ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "mkdir -p ~/github-deploy"
         scp -o StrictHostKeyChecking=no -r * ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:~/github-deploy
 
