@@ -24,7 +24,7 @@ server.start()
 # Update SQLAlchemy URL with the tunneled port
 config = context.config
 config.set_main_option(
-    'sqlalchemy.url', settings.database_url
+    'sqlalchemy.url', settings.DATABASE_URL
 )
 
 # this is the Alembic Config object, which provides
