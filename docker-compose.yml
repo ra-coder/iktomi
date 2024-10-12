@@ -4,6 +4,7 @@ services:
     container_name: iktomi-front
     build:
       dockerfile: front/Dockerfile
+      context: front
     ports:
       - "80:80"
       - "443:443"
