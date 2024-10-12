@@ -41,7 +41,7 @@ services:
     networks:
       - iktomi
     depends_on:
-      - postgres
+      - iktomi-postgres
 
   iktomi-postgres:
     image: postgres:latest
