@@ -50,7 +50,7 @@ def upgrade() -> None:
                 "id": 1,
                 "name": "vk.com",
                 "client_id": "52467648",
-                "client_secret": "5ce351d15ce351d15ce351d1405fc3c61155ce35ce351d13be981007a9a042748bc5598",
+                "client_secret": "",  # TODO fill manually
                 "redirect_uri": "https://iktomi.pro/vk-login",
             }
         ]
