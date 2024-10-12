@@ -29,5 +29,5 @@ jobs:
         ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
           cd ~/github-deploy
           docker compose build iktomi-front
-          docker compose up -d
+          docker compose up -d iktomi-front
         EOF
