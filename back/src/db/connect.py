@@ -1,12 +1,13 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from config import settings
 
 # Database URL (replace with your DB config)
-DATABASE_URL = "postgresql://user:password@localhost:5432/mydatabase"
+
 
 # Sync SQLAlchemy engine
-engine = create_engine(DATABASE_URL)
+engine = create_engine(settings.DATABASE_URL)
 
 # Base class for ORM models
 Base = declarative_base()
