@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 import sentry_sdk
 
-from vk.login import vk_login_router
+from api.vk.login import vk_login_router
+from api.users import users_search_router
 from config import settings
 
 sentry_sdk.init(
@@ -19,14 +20,14 @@ sentry_sdk.init(
 app = FastAPI(
     title="Iktomi API",
     description="This is a simple FastAPI application.",
-    version="0.0.1",
+    version="0.1.1",
     openapi_url="/api/openapi.json",
     docs_url="/api/docs",
     redoc_url="/api/redoc",
 )
 
 app.include_router(vk_login_router)
-
+app.include_router(users_search_router)
 
 # Root endpoint
 @app.get("/api/")
