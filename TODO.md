@@ -21,11 +21,15 @@ dev TODO
    - [X] add user to db on login
    - [X] check if user exists + glue accounts
    - [ ] поченить редирект и авторизацию с мобилки
+ - [ ] github OAuth
+   - [x] register dev account
+   - [x] add to site
+   - [ ] add user to db on login
  - [ ] create account form saml provider 
  
 function backlog
  - [ ] логин
- - [ ] просмотр списка пользователей на платформе
+ - [x] просмотр списка пользователей на платформе
  - [ ] просмотр профиля человека
  - [ ] оставить отзыв/рекомендаци о коллеге (человеке на платформе)
  - [ ] запросить добавить "верефицированную организацию"
