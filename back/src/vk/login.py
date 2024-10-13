@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from sqlalchemy import select
 
 from db.connect import AsyncSessionLocal, get_async_db_session
-from db.oauth import OAuthAccount
+from db.oauth import OAuthAccount, RawExternalData
 from db.user import User
 
 vk_login_router = APIRouter()
@@ -27,6 +27,7 @@ class VKTokens(BaseModel):
 class UserInfo(BaseModel):
     id: int
     email: str
+    name: str
 
 
 @vk_login_router.post("/api/vk/login/tokens")
@@ -55,7 +56,7 @@ async def read_root(
 
     vk_user_info = await get_vk_user_info(user_tokens_data.id_token)
     user = User(
-        email=vk_user_info["email"],
+        email=vk_user_info.get("email"),
         first_name=vk_user_info.get("first_name"),
         last_name=vk_user_info.get("last_name"),
     )
@@ -69,9 +70,16 @@ async def read_root(
         refresh_token=user_tokens_data.refresh_token,
     )
     async_db_session.add(account)
+    row_data = RawExternalData(
+        user_id=user.id,
+        provider_id=VK_PROVIDER_ID,
+        provider_user_id=str(user_tokens_data.user_id),
+        data=vk_user_info,
+    )
+    async_db_session.add(row_data)
     await async_db_session.commit()
 
-    return UserInfo(user_id=user.id, email=user.email)
+    return UserInfo(id=user.id, email=user.email, name=user.first_name)
 
 
 async def get_vk_user_info(user_access_token: str):
