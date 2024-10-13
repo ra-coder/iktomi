@@ -100,33 +100,60 @@
         <h1>All Users</h1>
         <input type="text" id="search" placeholder="Search users..." onkeyup="searchUsers()">
         <table id="userTable">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>John Doe</td>
-                    <td>john.doe@example.com</td>
-                    <td>Admin</td>
-                </tr>
-                <tr>
-                    <td>Jane Smith</td>
-                    <td>jane.smith@example.com</td>
-                    <td>User</td>
-                </tr>
-                <tr>
-                    <td>Sam Johnson</td>
-                    <td>sam.johnson@example.com</td>
-                    <td>Moderator</td>
-                </tr>
-            </tbody>
-        </table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be inserted here -->
+        </tbody>
+    </table>
     </main>
 
+    <script>
+        async function fetchUsers() {
+            try {
+                const response = await fetch('https://iktomi.pro/api/users/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                populateTable(data.users);
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            }
+        }
+
+        function populateTable(users) {
+            const tbody = document.querySelector('#userTable tbody');
+            tbody.innerHTML = '';  // Clear existing rows
+
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.email}</td>
+                    <td>${user.first_name}</td>
+                    <td>${user.last_name}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Call fetchUsers when the page loads
+        document.addEventListener('DOMContentLoaded', fetchUsers);
+    </script>
     <script>
         function searchUsers() {
             const input = document.getElementById('search').value.toLowerCase();
