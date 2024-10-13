@@ -19,10 +19,10 @@ class UsersInfo(BaseModel):
     users: list[UserInfo] = []
 
 
-@users_search_router.post("/api/users/search")
+@users_search_router.post("/api/users/search", response_model=UsersInfo)
 async def users_search(
     async_db_session: AsyncSessionLocal = Depends(get_async_db_session),
-):
+) -> UsersInfo:
     query = select(
         func.array_agg(
             func.jsonb_build_object(
@@ -41,4 +41,4 @@ async def users_search(
         )
     )
     result = await async_db_session.execute(query)
-    return UserInfo(users=result.scalar_one())
+    return UsersInfo(users=result.scalar_one())
