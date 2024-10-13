@@ -59,7 +59,7 @@ async def read_root(
         )
         if response.status_code == 200:
             parsed = parse_qs(response.content, encoding='utf-8')
-            json_data = {key: values[0] for key, values in parsed.items()}
+            json_data = {key.decode("utf-8"): values[0].decode("utf-8") for key, values in parsed.items()}
             access_token = GithubAccessToken.model_validate(json_data)
         else:
             content = response.content
