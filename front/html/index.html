@@ -24,9 +24,34 @@
             font-size: 2rem;
             text-align: center;
         }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #ffcc00;
+        }
     </style>
 </head>
 <body>
+    <header>
+        <nav>
+            <a href="/">Main</a>
+            <a href="/all-users">All Users</a>
+            <a href="/my-profile">My Profile</a>
+        </nav>
+    </header>
+
     <h1>In development, be patient pls</h1>
     <div style="background-color: #2b2b2b; padding: 20px; border-radius: 10px;">
       <script src="https://unpkg.com/@vkid/sdk@<3.0.0/dist-sdk/umd/index.js"></script>

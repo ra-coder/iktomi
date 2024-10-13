@@ -19,7 +19,7 @@ dev TODO
    - [x] register dev account
    - [x] add to site
    - [X] add user to db on login
-   - [ ] check if user exists + glue accounts
+   - [X] check if user exists + glue accounts
    - [ ] поченить редирект и авторизацию с мобилки
  - [ ] create account form saml provider 
  
