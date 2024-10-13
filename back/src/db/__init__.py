@@ -1,8 +1,10 @@
 from db.connect import Base
 from db.oauth import OAuthAccount, OAuthProvider
+from db.user import User
 
 __all__ = [
-    "Base",
     "OAuthAccount",
     "OAuthProvider",
+    "User",
+    "Base",
 ]

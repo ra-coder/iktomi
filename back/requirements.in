@@ -2,7 +2,9 @@ fastapi
 pydantic[dotenv]>2.0
 pydantic_settings
 uvicorn
-sqlalchemy>2.0
+sqlalchemy[asyncio]>2.0
+asyncpg
 psycopg2-binary
 alembic
 sentry-sdk[fastapi]
+httpx

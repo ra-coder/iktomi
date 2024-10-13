@@ -20,6 +20,7 @@ dev TODO
    - [x] add to site
    - [X] add user to db on login
    - [ ] check if user exists + glue accounts
+   - [ ] поченить редирект и авторизацию с мобилки
  - [ ] create account form saml provider 
  
 function backlog

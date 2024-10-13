@@ -1,5 +1,6 @@
+from sqlalchemy import Column, DateTime, ForeignKey, Index, Integer, String, func
+
 from db.connect import Base
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, func
 
 
 class OAuthProvider(Base):
@@ -15,9 +16,11 @@ class OAuthProvider(Base):
 
 class OAuthAccount(Base):
     __tablename__ = "oauth_accounts"
-
+    __table_args__ = (
+        Index("ix_oauth_accounts_provider_user", "provider_id", "provider_user_id"),
+    )
     id = Column(Integer, primary_key=True, index=True)
-    # user_id = Column(Integer, ForeignKey("users.id"))  # Assuming you have a `users` table
+    user_id = Column(Integer, ForeignKey("users.id"))
     provider_id = Column(Integer, ForeignKey("oauth_providers.id"))
     provider_user_id = Column(String, index=True)  # ID provided by OAuth provider
     access_token = Column(String, nullable=False)
