@@ -61,6 +61,38 @@
         h1 {
             margin-bottom: 20px;
         }
+
+    /* Styling the github Login button */
+    #login-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      background-color: #24292f;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.1s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Add hover and active effects */
+    #login-btn:hover {
+      background-color: #333940;
+    }
+
+    #login-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* GitHub icon styling */
+    #login-btn img {
+      width: 24px;
+      height: 24px;
+    }
     </style>
 </head>
 <body>
@@ -73,6 +105,7 @@
     </header>
     <main>
     <h1>In development, be patient pls</h1>
+    <h2>Login with VK</h2>
     <div style="background-color: #2b2b2b; padding: 20px; border-radius: 10px;">
       <script src="https://unpkg.com/@vkid/sdk@<3.0.0/dist-sdk/umd/index.js"></script>
       <script type="text/javascript">
@@ -140,7 +173,12 @@
     </div>
     <h2>Login with GitHub</h2>
      <div style="background-color: #2b2b2b; padding: 20px; border-radius: 10px;">
-    <button id="login-btn">Login with GitHub</button>
+      <div class="container">
+        <button id="login-btn">
+          <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo">
+          Login with GitHub
+        </button>
+      </div>
     <pre id="user-info"></pre>
 
   <script>
