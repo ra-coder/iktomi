@@ -68,6 +68,7 @@ async def read_root(
         provider_user_id=str(user_tokens_data.user_id),
         access_token=user_tokens_data.access_token,
         refresh_token=user_tokens_data.refresh_token,
+        token_id=user_tokens_data.id_token,
     )
     async_db_session.add(account)
     row_data = RawExternalData(
