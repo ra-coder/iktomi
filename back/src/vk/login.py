@@ -46,8 +46,8 @@ async def read_root(
         ).where(
             OAuthAccount.provider_id == VK_PROVIDER_ID,
             OAuthAccount.provider_user_id == user_tokens_data.user_id,
-        ).scalar_one_or_none()
-    )
+        )
+    ).scalar_one_or_none()
     if row is not None:
         user_id, user_email = row
         return UserInfo(user_id=user_id, email=user_email)
