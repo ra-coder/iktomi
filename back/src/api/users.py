@@ -24,7 +24,7 @@ async def users_search(
     async_db_session: AsyncSessionLocal = Depends(get_async_db_session),
 ):
     query = select(
-        func.jsonb_array_agg(
+        func.array_agg(
             func.jsonb_build_object(
                 'id', User.id,
                 'email', User.email,
@@ -35,8 +35,10 @@ async def users_search(
     ).select_from(
         User,
     ).order_by(
-        User.last_name,
-        User.first_name,
+        (
+            User.last_name,
+            User.first_name,
+        )
     )
     result = await async_db_session.execute(query)
     return UserInfo(users=result.scalar_one())
