@@ -45,7 +45,7 @@ async def read_root(
             OAuthAccount.user_id == User.id,
         ).where(
             OAuthAccount.provider_id == VK_PROVIDER_ID,
-            OAuthAccount.provider_user_id == user_tokens_data.user_id,
+            OAuthAccount.provider_user_id == str(user_tokens_data.user_id),
         )
     )
     row = result.scalar_one_or_none()
