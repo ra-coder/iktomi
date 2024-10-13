@@ -78,13 +78,13 @@ async def read_root(
             },
         )
     if response.status_code == 200:
-        data = response.json()
-        if "error" in data:
-            raise RuntimeError(f"Error: {data}")
-        return data
+        content = response.content
+        headers = response.headers
+        raise RuntimeError(f"Content: {content}, headers: {headers}")
     else:
-        raise RuntimeError("Bad github response")
-
+        content = response.content
+        headers = response.headers
+        raise RuntimeError(f"Bad github response Content: {content}, headers: {headers}")
 
     # result = await async_db_session.execute(
     #     select(
