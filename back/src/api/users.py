@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlalchemy import func, select
+from sqlalchemy.dialects.postgresql import aggregate_order_by
 
 from db.connect import AsyncSessionLocal, get_async_db_session
 from db.user import User
@@ -25,15 +26,16 @@ async def users_search(
 ) -> UsersInfo:
     query = select(
         func.array_agg(
-            func.jsonb_build_object(
-                'id', User.id,
-                'email', User.email,
-                'first_name', User.first_name,
-                'last_name', User.last_name,
-            ).order_by(
+            aggregate_order_by(
+                func.jsonb_build_object(
+                    'id', User.id,
+                    'email', User.email,
+                    'first_name', User.first_name,
+                    'last_name', User.last_name,
+                ),
                 User.last_name,
                 User.first_name,
-            ),
+            )
         )
     ).select_from(
         User,
