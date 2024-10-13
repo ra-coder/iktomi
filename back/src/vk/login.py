@@ -90,5 +90,8 @@ async def get_vk_user_info(user_tokens_data):
             content=f"client_id={VK_CLIENT_ID}&id_token={user_tokens_data.access_token}",
         )
     if response.status_code == 200:
-        return response.json()
+        data = response.json()
+        if "error" in data:
+            raise RuntimeError(f"Error: {data}")
+        return data["user"]
     raise RuntimeError("Bad vk response")
