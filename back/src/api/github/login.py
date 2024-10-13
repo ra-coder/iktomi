@@ -73,7 +73,7 @@ async def read_root(
             json={
                 "client_id": GITHUB_CLIENT_ID,
                 "client_secret": secret,
-                "code": GithubCode.code,
+                "code": user_tokens_data.code,
                 "redirect_uri": "https://iktomi.pro/github-login",
             },
         )
