@@ -9,7 +9,7 @@ from db.user import User
 
 github_login_router = APIRouter()
 
-GITHUB_PROVIDER_ID = 1
+GITHUB_PROVIDER_ID = 2
 GITHUB_CLIENT_ID = "Ov23lin4GfC1NKNE4u6p"
 
 
