@@ -1,11 +1,13 @@
+import logging
+from urllib.parse import parse_qs
+
 import httpx
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlalchemy import select
 
 from db.connect import AsyncSessionLocal, get_async_db_session
-from db.oauth import OAuthAccount, RawExternalData, OAuthProvider
-from db.user import User
+from db.oauth import OAuthProvider
 
 github_login_router = APIRouter()
 
@@ -23,39 +25,17 @@ class UserInfo(BaseModel):
     name: str
 
 
+class GithubAccessToken(BaseModel):
+    access_token: str
+    scope: str
+    token_type: str
+
+
 @github_login_router.post("/api/github/login/tokens")
 async def read_root(
     user_tokens_data: GithubCode,
     async_db_session: AsyncSessionLocal = Depends(get_async_db_session),
-) -> UserInfo:
-    """
-      const response = await fetch('https://github.com/login/oauth/access_token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          client_id: client_id,
-          client_secret: 'your_github_client_secret',  // Replace with your secret
-          code: code,
-          redirect_uri: redirect_uri
-        })
-      });
-
-      const data = await response.text();
-      const params = new URLSearchParams(data);
-      res.json({ access_token: params.get('access_token') });
-
-        // Fetch User Data (Step 4)
-        async function fetchGitHubUser(token) {
-          try {
-            const response = await fetch('https://api.github.com/user', {
-              headers: { Authorization: `token ${token}` }
-            });
-            return await response.json();
-          } catch (error) {
-            console.error('Error fetching user data:', error);
-          }
-        }
-    """
+):
     stmt = select(
         OAuthProvider.client_secret,
     ).select_from(
@@ -77,14 +57,27 @@ async def read_root(
                 "redirect_uri": "https://iktomi.pro/github-login",
             },
         )
-    if response.status_code == 200:
-        content = response.content
-        headers = response.headers
-        raise RuntimeError(f"Content: {content}, headers: {headers}")
-    else:
-        content = response.content
-        headers = response.headers
-        raise RuntimeError(f"Bad github response Content: {content}, headers: {headers}")
+        if response.status_code == 200:
+            parsed = parse_qs(response.content)
+            json_data = {key: values[0] for key, values in parsed.items()}
+            access_token = GithubAccessToken.model_validate(json_data)
+        else:
+            content = response.content
+            headers = response.headers
+            raise RuntimeError(f"Bad github response Content: {content}, headers: {headers}")
+
+        response = await client.get(
+            url="https://api.github.com/user",
+            headers={"Authorization": f"token {access_token.access_token}"},
+        )
+        if response.status_code == 200:
+            user_data = response.json()
+        else:
+            content = response.content
+            headers = response.headers
+            raise RuntimeError(f"Bad github response Content: {content}, headers: {headers}")
+
+    logging.error(f"user_data: {user_data}")
 
     # result = await async_db_session.execute(
     #     select(
@@ -132,3 +125,5 @@ async def read_root(
     # await async_db_session.commit()
     #
     # return UserInfo(id=user.id, email=user.email, name=user.first_name)
+
+    return user_data
