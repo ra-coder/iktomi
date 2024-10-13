@@ -53,7 +53,7 @@ async def read_root(
         user_id, user_email = row
         return UserInfo(user_id=user_id, email=user_email)
 
-    vk_user_info = await get_vk_user_info(user_tokens_data)
+    vk_user_info = await get_vk_user_info(user_tokens_data.id_token)
     user = User(
         email=vk_user_info["email"],
         first_name=vk_user_info.get("first_name"),
@@ -74,7 +74,7 @@ async def read_root(
     return UserInfo(user_id=user.id, email=user.email)
 
 
-async def get_vk_user_info(user_tokens_data):
+async def get_vk_user_info(user_access_token: str):
     """
         POST https://id.vk.com/oauth2/public_info
 
@@ -87,7 +87,7 @@ async def get_vk_user_info(user_tokens_data):
         response = await client.post(
             url="https://id.vk.com/oauth2/public_info",
             headers={"Content-Type": "application/x-www-form-urlencoded"},
-            content=f"client_id={VK_CLIENT_ID}&id_token={user_tokens_data.access_token}",
+            content=f"client_id={VK_CLIENT_ID}&id_token={user_access_token}",
         )
     if response.status_code == 200:
         data = response.json()
