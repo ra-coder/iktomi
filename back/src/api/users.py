@@ -30,13 +30,13 @@ async def users_search(
                 'email', User.email,
                 'first_name', User.first_name,
                 'last_name', User.last_name,
-            )
-        )
+            ),
+        ).order_by(
+            User.last_name,
+            User.first_name,
+        ),
     ).select_from(
         User,
-    ).order_by(
-        User.last_name,
-        User.first_name,
     )
     result = await async_db_session.execute(query)
     return UsersInfo(users=result.scalar_one())
