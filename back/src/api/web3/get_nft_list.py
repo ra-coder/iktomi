@@ -17,12 +17,11 @@ class CurrencyValue(BaseModel):
 
 class WalletRequest(BaseModel):
     address: str
-    data: Any
 
 
-class WalletInfo(BaseModel):
+class WalletResponse(BaseModel):
     address: str
-    balance: list[CurrencyValue]
+    data: Any
 
 
 async def get_nfts(owner_address):
@@ -36,9 +35,9 @@ async def get_nfts(owner_address):
         raise RuntimeError("bad request from alchemy RPC_URL")
 
 
-@web3_get_nfts_router.post("/api/web3/get_nft_list")
+@web3_get_nfts_router.post("/api/web3/get_nft_list", response_model=WalletResponse)
 async def get_nft_list(wallet: WalletRequest):
-    return WalletInfo(
+    return WalletResponse(
         address=wallet.address,
         data=await get_nfts(wallet.address)
     )
