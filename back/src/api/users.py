@@ -50,6 +50,8 @@ async def users_search(
     ).outerjoin(
         Wallet,
         Wallet.user_id == User.id,
+    ).group_by(
+        User.id,
     ).order_by(
         User.last_name,
         User.first_name,
