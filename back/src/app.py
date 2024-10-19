@@ -2,7 +2,7 @@ import sentry_sdk
 from fastapi import FastAPI
 
 from api.github.login import github_login_router
-from api.user.nfts import users_info_router
+from api.user.nfts import user_nfts_router
 from api.user.search import users_search_router
 from api.vk.login import vk_login_router
 from api.web3.get_balance import web3_router
@@ -33,7 +33,7 @@ app = FastAPI(
 app.include_router(vk_login_router)
 app.include_router(github_login_router)
 app.include_router(users_search_router)
-app.include_router(users_info_router)
+app.include_router(user_nfts_router)
 app.include_router(web3_router)
 app.include_router(web3_get_nfts_router)
 
