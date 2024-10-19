@@ -2,7 +2,7 @@ import sentry_sdk
 from fastapi import FastAPI
 
 from api.github.login import github_login_router
-from api.user.info import users_info_router
+from api.user.nfts import users_info_router
 from api.user.search import users_search_router
 from api.vk.login import vk_login_router
 from api.web3.get_balance import web3_router

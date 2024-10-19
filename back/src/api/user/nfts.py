@@ -6,7 +6,7 @@ from db import User, Wallet
 from db.connect import AsyncSessionLocal, get_async_db_session
 from integrations.poligon import NFTData, get_nfts
 
-users_info_router = APIRouter()
+user_nfts_router = APIRouter()
 
 
 class WalletInfo(BaseModel):
@@ -24,7 +24,7 @@ class UserInfo(BaseModel):
     wallets: list[WalletInfo] | None
 
 
-@users_info_router.get("/api/user/{user_id: int}", response_model=UserInfo)
+@user_nfts_router.get("/api/user/nfts", response_model=UserInfo)
 async def users_info(
     user_id: int,
     async_db_session: AsyncSessionLocal = Depends(get_async_db_session),
