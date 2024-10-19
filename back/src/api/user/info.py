@@ -13,7 +13,7 @@ class WalletInfo(BaseModel):
     id: int
     address: str
     is_confirmed: bool
-    nfts: NFTData
+    nfts: NFTData | None = None
 
 
 class UserInfo(BaseModel):
