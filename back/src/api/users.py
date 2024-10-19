@@ -43,7 +43,7 @@ async def users_search(
                     'address', Wallet.address,
                     'is_confirmed', Wallet.is_confirmed,
                 ),
-            ),
+            ).filter(Wallet.id.isnot(None)),
         ),
     ).select_from(
         User,
