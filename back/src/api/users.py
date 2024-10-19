@@ -10,9 +10,9 @@ users_search_router = APIRouter()
 
 
 class WalletInfo(BaseModel):
-    id: int
-    address: str
-    is_confirmed: bool
+    id: int | None
+    address: str | None
+    is_confirmed: bool | None
 
 
 class UserInfo(BaseModel):
@@ -20,7 +20,7 @@ class UserInfo(BaseModel):
     email: str
     first_name: str
     last_name: str
-    wallets: list[WalletInfo]
+    wallets: list[WalletInfo] | None
 
 
 class UsersInfo(BaseModel):
