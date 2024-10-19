@@ -24,6 +24,12 @@ jobs:
         ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "mkdir -p ~/github-deploy"
         scp -o StrictHostKeyChecking=no -r * ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:~/github-deploy
 
+    - name: Create .env file
+      run: |
+        echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+        echo "RPC_URL=${{ secrets.RPC_URL }}" >> .env
+        scp -o StrictHostKeyChecking=no  .env ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:~/github-deploy/scr/back/.env
+
     - name: Deploy Front Docker Container
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'

@@ -1,9 +1,10 @@
-from fastapi import FastAPI
 import sentry_sdk
+from fastapi import FastAPI
 
 from api.github.login import github_login_router
-from api.vk.login import vk_login_router
 from api.users import users_search_router
+from api.vk.login import vk_login_router
+from api.web3.get_balance import web3_router
 from config import settings
 
 sentry_sdk.init(
@@ -30,6 +31,8 @@ app = FastAPI(
 app.include_router(vk_login_router)
 app.include_router(github_login_router)
 app.include_router(users_search_router)
+app.include_router(web3_router)
+
 
 # Root endpoint
 @app.get("/api/")

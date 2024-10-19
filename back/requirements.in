@@ -8,3 +8,4 @@ psycopg2-binary
 alembic
 sentry-sdk[fastapi]
 httpx
+web3
