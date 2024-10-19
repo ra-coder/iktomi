@@ -27,7 +27,7 @@ jobs:
     - name: Create .env file
       run: |
         touch .env
-        echo "DATABASE_URL=${{ secrets.DATABASE_URL }}\n" >> .env
+        echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
         echo "RPC_URL=${{ secrets.RPC_URL }}" >> .env
         scp -o StrictHostKeyChecking=no  .env ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:~/github-deploy/back/src/.env
 
