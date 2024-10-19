@@ -70,7 +70,7 @@ async def get_wallet_info(wallet: WalletRequest):
     # nfts = fetch_nfts(wallet.wallet_address)
 
     return WalletInfo(
-        address=wallet.wallet_address,
+        address=wallet.address,
         balance=[CurrencyValue(code="ETH", value=Decimal(balance))],
         # "nfts": nfts
     )
