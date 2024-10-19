@@ -140,11 +140,11 @@
             const tbody = document.querySelector('#userTable tbody');
             tbody.innerHTML = '';  // Clear existing rows
 
-            const walletAddresses = user.wallets && user.wallets.length > 0
-                ? user.wallets.map(wallet => wallet.address).join('<br>')
-                : 'No Wallet provided';
 
             users.forEach(user => {
+                const walletAddresses = user.wallets && user.wallets.length > 0
+                    ? user.wallets.map(wallet => wallet.address).join('<br>')
+                    : 'No Wallet provided';
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${user.id}</td>
