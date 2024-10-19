@@ -54,11 +54,11 @@ class CurrencyValue(BaseModel):
 
 class WalletRequest(BaseModel):
     wallet_address: str
-    balance: list[CurrencyValue]
 
 
 class WalletInfo(BaseModel):
     wallet_address: str
+    balance: list[CurrencyValue]
 
 
 @web3_router.post("/api/web3/wallet-info")
