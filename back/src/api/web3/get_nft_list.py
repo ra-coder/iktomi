@@ -26,7 +26,7 @@ class WalletResponse(BaseModel):
 
 async def get_nfts(owner_address):
     async with httpx.AsyncClient() as client:
-        response = await client.get(settings.RPC_URL, params={"owner": owner_address})
+        response = await client.get(f"{settings.RPC_URL}/getNFTs", params={"owner": owner_address})
 
         # Check if the request was successful
         if response.status_code == 200:
