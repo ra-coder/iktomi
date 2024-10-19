@@ -33,7 +33,7 @@ web3_router = APIRouter()
 
 # Helper function to get Ether balance
 def get_eth_balance(address: str):
-    address = Address(bytes.fromhex(address))
+    address = Address(bytes.fromhex(address[2:]))  # address str without 0x prefix
     web3_api = Web3(Web3.HTTPProvider(settings.RPC_URL))
 
     if not web3_api.is_address(address):
