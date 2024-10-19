@@ -35,8 +35,8 @@ class Metadata(BaseModel):
     description: str
     image: str
     external_url: str
-    background_color: str
-    supply: str
+    background_color: str | None = None
+    supply: str | None = None
 
 
 class OpenSea(BaseModel):
@@ -44,7 +44,7 @@ class OpenSea(BaseModel):
     collectionSlug: str
     safelistRequestStatus: str
     imageUrl: str
-    description: str
+    description: str | None = None
     lastIngestedAt: str
 
 
