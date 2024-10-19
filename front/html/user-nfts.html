@@ -40,81 +40,52 @@
     </div>
 
     <script>
-        const data = {
-            "id": 2,
-            "email": "d-***@ya.ru",
-            "first_name": "Александр",
-            "last_name": "Р.",
-            "wallets": [
-                {
-                    "id": 1,
-                    "address": "0xb39d9C554EfDea3382D833c7F2E2dc555D08aB82",
-                    "is_confirmed": true,
-                    "nfts": {
-                        "ownedNfts": [
-                            {
-                                "contract": { "address": "0x1c0fc9f1abcf28ca5bb36cc010ccf500459998f2" },
-                                "id": { "tokenId": "0x00", "tokenMetadata": { "tokenType": "ERC1155" } },
-                                "balance": "1",
-                                "title": "spider inspiration",
-                                "description": "image found when first name for domain was chosen ",
-                                "tokenUri": {
-                                    "gateway": "https://alchemy.mypinata.cloud/ipfs/QmdysdCyUj5A9gUC8QNsfi9foS7EFtoKRqVnhkLP83CYzq"
-                                },
-                                "media": [
-                                    {
-                                        "gateway": "https://nft-cdn.alchemy.com/matic-mainnet/a9e1028ce69d5e967634c1c0b54a1a48",
-                                        "thumbnail": "https://res.cloudinary.com/alchemyapi/image/upload/thumbnailv2/matic-mainnet/a9e1028ce69d5e967634c1c0b54a1a48",
-                                        "format": "webp"
-                                    }
-                                ]
-                            },
-                            {
-                                "contract": { "address": "0xd96b79dfdc1ef01c099722f1242d4fb689cff0c8" },
-                                "id": { "tokenId": "0x01", "tokenMetadata": { "tokenType": "ERC1155" } },
-                                "balance": "1",
-                                "title": "2ETH Reward at t.ly/ldo",
-                                "description": "#212 Owning this badge indicates that the user has received 2ETH Airdrop. Visit official website：t.ly/ldo",
-                                "tokenUri": {
-                                    "gateway": "https://ipfs.io/ipfs/QmVzoh4GhzgwLXhwX5EeQu4CD4icCy9DqPSpwf2MCWoH4k"
-                                },
-                                "media": [
-                                    {
-                                        "gateway": "https://nft-cdn.alchemy.com/matic-mainnet/7d366a28d6e4ff45dae4ce44bdf36dd6",
-                                        "thumbnail": "https://res.cloudinary.com/alchemyapi/image/upload/thumbnailv2/matic-mainnet/7d366a28d6e4ff45dae4ce44bdf36dd6",
-                                        "format": "png"
-                                    }
-                                ]
-                            }
-                        ],
-                        "totalCount": 2
-                    }
-                }
-            ]
-        };
 
-        // Display user information
-        document.getElementById('userEmail').textContent = data.email;
-        document.getElementById('userFirstName').textContent = data.first_name;
-        document.getElementById('userLastName').textContent = data.last_name;
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
 
-        // Display wallet and NFTs
-        const walletsContainer = document.getElementById('walletsContainer');
+        // Get user_id from URL query parameters
+        const userId = getQueryParam('user_id');
+        if (!userId) {
+            alert('User ID is missing from URL!');
+        }
 
-        data.wallets.forEach(wallet => {
-            const walletDiv = document.createElement('div');
-            walletDiv.classList.add('wallet-info');
-            walletDiv.innerHTML = `
+        // Fetch user NFT data from the API
+        const apiUrl = `https://iktomi.pro/api/user/nfts?user_id=${userId}`;
+
+        fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+
+            // Display user information
+            document.getElementById('userEmail').textContent = data.email;
+            document.getElementById('userFirstName').textContent = data.first_name;
+            document.getElementById('userLastName').textContent = data.last_name;
+
+            // Display wallet and NFTs
+            const walletsContainer = document.getElementById('walletsContainer');
+
+            data.wallets.forEach(wallet => {
+                const walletDiv = document.createElement('div');
+                walletDiv.classList.add('wallet-info');
+                walletDiv.innerHTML = `
                 <h3>Wallet Address: ${wallet.address}</h3>
                 <p><strong>Confirmed:</strong> ${wallet.is_confirmed}</p>
                 <h4>NFTs (${wallet.nfts.totalCount})</h4>
             `;
 
-            // Loop through NFTs and display each
-            wallet.nfts.ownedNfts.forEach(nft => {
-                const nftDiv = document.createElement('div');
-                nftDiv.classList.add('nft-item');
-                nftDiv.innerHTML = `
+                // Loop through NFTs and display each
+                wallet.nfts.ownedNfts.forEach(nft => {
+                    const nftDiv = document.createElement('div');
+                    nftDiv.classList.add('nft-item');
+                    nftDiv.innerHTML = `
                     <img src="${nft.media[0].thumbnail}" alt="${nft.title}">
                     <div>
                         <h5>${nft.title}</h5>
@@ -124,10 +95,11 @@
                     </div>
                 `;
 
-                walletDiv.appendChild(nftDiv);
-            });
+                    walletDiv.appendChild(nftDiv);
+                });
 
-            walletsContainer.appendChild(walletDiv);
+                walletsContainer.appendChild(walletDiv);
+            });
         });
     </script>
 
