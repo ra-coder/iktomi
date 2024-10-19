@@ -25,7 +25,12 @@ dev TODO
    - [x] register dev account
    - [x] add to site
    - [ ] add user to db on login
- - [ ] create account form saml provider 
+ - [ ] create account form saml provider
+ - [X] Add web3 API via alchemy.com
+ - [ ] web3 connect wallet API
+   - [ ] challenge wallet
+   - [ ] store wallet iin DB
+    
  
 function backlog
  - [ ] логин

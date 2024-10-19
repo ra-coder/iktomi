@@ -5,6 +5,7 @@ from api.github.login import github_login_router
 from api.users import users_search_router
 from api.vk.login import vk_login_router
 from api.web3.get_balance import web3_router
+from api.web3.get_nft_list import web3_get_nfts_router
 from config import settings
 
 sentry_sdk.init(
@@ -32,6 +33,7 @@ app.include_router(vk_login_router)
 app.include_router(github_login_router)
 app.include_router(users_search_router)
 app.include_router(web3_router)
+app.include_router(web3_get_nfts_router)
 
 
 # Root endpoint
