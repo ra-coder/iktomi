@@ -64,7 +64,7 @@ class WalletInfo(BaseModel):
 @web3_router.post("/api/web3/wallet-info")
 async def get_wallet_info(wallet: WalletRequest):
     # Get wallet balance
-    balance = get_eth_balance(wallet.wallet_address)
+    balance = get_eth_balance(wallet.address)
 
     # Fetch NFTs
     # nfts = fetch_nfts(wallet.wallet_address)
