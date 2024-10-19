@@ -52,10 +52,9 @@ async def users_search(
         )
     ).select_from(
         User,
-    ).join(
+    ).outerjoin(
         Wallet,
         Wallet.user_id == User.id,
-        is_outer=True,
     )
     result = await async_db_session.execute(query)
     return UsersInfo(users=result.scalars())
