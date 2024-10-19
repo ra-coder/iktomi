@@ -1,10 +1,9 @@
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlalchemy import func, select
-from sqlalchemy.dialects.postgresql import aggregate_order_by
 
-from db.connect import AsyncSessionLocal, get_async_db_session
 from db import User, Wallet
+from db.connect import AsyncSessionLocal, get_async_db_session
 
 users_search_router = APIRouter()
 
