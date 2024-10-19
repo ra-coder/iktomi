@@ -32,29 +32,27 @@ async def users_search(
     async_db_session: AsyncSessionLocal = Depends(get_async_db_session),
 ) -> UsersInfo:
     query = select(
-
-        aggregate_order_by(
-            func.jsonb_build_object(
-                'id', User.id,
-                'email', User.email,
-                'first_name', User.first_name,
-                'last_name', User.last_name,
-                'wallets', func.array_agg(
-                    func.jsonb_build_object(
-                        'id', Wallet.id,
-                        'address', Wallet.address,
-                        'is_confirmed', Wallet.is_confirmed
-                    )
-                )
+        func.jsonb_build_object(
+            'id', User.id,
+            'email', User.email,
+            'first_name', User.first_name,
+            'last_name', User.last_name,
+            'wallets', func.array_agg(
+                func.jsonb_build_object(
+                    'id', Wallet.id,
+                    'address', Wallet.address,
+                    'is_confirmed', Wallet.is_confirmed,
+                ),
             ),
-            User.last_name,
-            User.first_name,
-        )
+        ),
     ).select_from(
         User,
     ).outerjoin(
         Wallet,
         Wallet.user_id == User.id,
+    ).order_by(
+        User.last_name,
+        User.first_name,
     )
     result = await async_db_session.execute(query)
     return UsersInfo(users=result.scalars())
