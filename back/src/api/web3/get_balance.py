@@ -53,11 +53,11 @@ class CurrencyValue(BaseModel):
 
 
 class WalletRequest(BaseModel):
-    wallet_address: str
+    address: str
 
 
 class WalletInfo(BaseModel):
-    wallet_address: str
+    address: str
     balance: list[CurrencyValue]
 
 
