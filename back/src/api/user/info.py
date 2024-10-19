@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy import func, select
 
@@ -24,8 +24,9 @@ class UserInfo(BaseModel):
     wallets: list[WalletInfo] | None
 
 
-@users_info_router.post("/api/user/info", response_model=UserInfo)
+@users_info_router.get("/api/user/{user_id: int}", response_model=UserInfo)
 async def users_info(
+    user_id: int,
     async_db_session: AsyncSessionLocal = Depends(get_async_db_session),
 ) -> UserInfo:
     query = select(
@@ -47,17 +48,18 @@ async def users_info(
     ).outerjoin(
         Wallet,
         Wallet.user_id == User.id,
+    ).where(
+        User.id == user_id,
     ).group_by(
         User.id,
-    ).order_by(
-        User.last_name,
-        User.first_name,
     )
     result = await async_db_session.execute(query)
-    info = UserInfo(users=result.scalar_one())
+    info = result.scalar_one_or_none()
+    if info is None:
+        raise HTTPException(status_code=404, detail="user not found")
+    info = UserInfo.model_validate(info)
     if info.wallets is None:
         info.wallets = []
     for wallet in info.wallets:
         wallet.nfts = await get_nfts(wallet.address)
-
     return info
