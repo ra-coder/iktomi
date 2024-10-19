@@ -106,6 +106,7 @@
                 <th>Email</th>
                 <th>First Name</th>
                 <th>Last Name</th>
+                <th>Wallet Address</th>
             </tr>
         </thead>
         <tbody>
@@ -139,6 +140,10 @@
             const tbody = document.querySelector('#userTable tbody');
             tbody.innerHTML = '';  // Clear existing rows
 
+            const walletAddresses = user.wallets && user.wallets.length > 0
+                ? user.wallets.map(wallet => wallet.address).join('<br>')
+                : 'No Wallet provided';
+
             users.forEach(user => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -146,6 +151,7 @@
                     <td>${user.email}</td>
                     <td>${user.first_name}</td>
                     <td>${user.last_name}</td>
+                    <td>${walletAddresses}</td>
                 `;
                 tbody.appendChild(row);
             });
