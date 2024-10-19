@@ -8,7 +8,7 @@ deops TODO
 
 db TODO
  - [X] iktomi postgres db
- - [ ] search for NFT + crypto db
+ - [X] search for NFT + crypto db
 
 dev TODO
  - [X] iktomi swagger
@@ -25,17 +25,16 @@ dev TODO
    - [x] register dev account
    - [x] add to site
    - [ ] add user to db on login
- - [ ] create account form saml provider
  - [X] Add web3 API via alchemy.com
- - [ ] web3 connect wallet API
+ - [x] web3 connect wallet API
    - [ ] challenge wallet
-   - [ ] store wallet iin DB
-    
+   - [x] store wallet in DB
+ 
  
 function backlog
  - [ ] логин
  - [x] просмотр списка пользователей на платформе
- - [ ] просмотр профиля человека
+ - [X] просмотр профиля человека
  - [ ] оставить отзыв/рекомендаци о коллеге (человеке на платформе)
  - [ ] запросить добавить "верефицированную организацию"
  - [ ] загрузить свой сертификат/артефакт 
