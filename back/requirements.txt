@@ -138,8 +138,8 @@ python-dotenv==1.0.1
     # via pydantic-settings
 pyunormalize==16.0.0
     # via web3
-pywin32==308
-    # via web3
+# pywin32==308;sys_platform == 'win32'
+#    # via web3
 regex==2024.9.11
     # via parsimonious
 requests==2.32.3
