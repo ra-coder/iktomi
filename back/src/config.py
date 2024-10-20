@@ -12,5 +12,8 @@ class Settings(BaseSettings):
     JWT_SECRET: str = "<264 byte str>"
     ISSUER: str = 'https://iktomi.pro'
 
+    VK_PROVIDER_ID: int = 1
+    VK_CLIENT_ID: int = 52467648
+
 
 settings = Settings()
