@@ -39,3 +39,7 @@ const openNetworkModalBtn = document.getElementById('open-network-modal')
 
 openConnectModalBtn.addEventListener('click', () => modal.open())
 openNetworkModalBtn.addEventListener('click', () => modal.open({ view: 'Networks' }))
+
+
+// Access walletKit from the modal
+const walletKit = modal.walletKit;
