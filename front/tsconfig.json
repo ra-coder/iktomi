@@ -8,6 +8,7 @@
     "strict": true               // Enable strict type-checking options
   },
   "include": [
+    "html/*.ts",
     "html/**/*.ts"               // Path to your TypeScript files
   ]
 }
