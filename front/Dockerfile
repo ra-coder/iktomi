@@ -8,9 +8,8 @@ WORKDIR /app
 COPY package.json /app/package.json
 
 # Install the necessary dependencies
-RUN npm install @reown/appkit @reown/appkit-adapter-wagmi wagmi viem @tanstack/react-query
-
-# Copy the rest of the application code
+RUN npm install @reown/appkit @reown/appkit-adapter-ethers ethers
+# Copy the rest of0 the application code
 COPY ./html /app/.
 
 # If you have a build script in your package.json, you can run it here

@@ -1,20 +1,11 @@
-// main.ts
 import { createAppKit } from '@reown/appkit'
+import { EthersAdapter } from '@reown/appkit-adapter-ethers'
 import { mainnet, arbitrum } from '@reown/appkit/networks'
-import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
 
-// 1. Get a project ID at https://cloud.reown.com
+// 1. Get projectId from https://cloud.reown.com
 const projectId = '381e3b06914cf89bc18aa57f3816dec5'
 
-export const networks = [mainnet, arbitrum]
-
-// 2. Set up Wagmi adapter
-const wagmiAdapter = new WagmiAdapter({
-  projectId,
-  networks
-})
-
-// 3. Configure the metadata
+// 2. Create your application's metadata object
 const metadata = {
   name: 'iktomi.pro',
   description: 'AppKit Example',
@@ -22,9 +13,9 @@ const metadata = {
   icons: ['https://assets.reown.com/reown-profile-pic.png']
 }
 
-// 3. Create the modal
+// 3. Create a AppKit instance
 const modal = createAppKit({
-  adapters: [wagmiAdapter],
+  adapters: [new EthersAdapter()],
   networks: [mainnet, arbitrum],
   metadata,
   projectId,
@@ -32,14 +23,3 @@ const modal = createAppKit({
     analytics: true // Optional - defaults to your Cloud configuration
   }
 })
-
-// 4. Trigger modal programaticaly
-const openConnectModalBtn = document.getElementById('open-connect-modal')
-const openNetworkModalBtn = document.getElementById('open-network-modal')
-
-openConnectModalBtn.addEventListener('click', () => modal.open())
-openNetworkModalBtn.addEventListener('click', () => modal.open({ view: 'Networks' }))
-
-
-// Access walletKit from the modal
-const walletKit = modal.walletKit;
