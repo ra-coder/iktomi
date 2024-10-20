@@ -31,10 +31,5 @@ def validate_jwt(jwt_token: str) -> JWTPayload:
     if payload.get('iss') != settings.ISSUER:
         raise jwt.InvalidIssuerError("Invalid issuer")
 
-    # TODO add in accept jwt
-    # except jwt.InvalidIssuerError:
-    # except jwt.ExpiredSignatureError:
-    # except jwt.InvalidTokenError:
-
     return JWTPayload.model_validate(payload)
 
