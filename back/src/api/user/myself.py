@@ -74,6 +74,6 @@ async def get_myself(
         User.id,
     )
     result = await async_db_session.execute(query)
-    user_info_with_wallets = UserInfo(**result.scalars_one_or_none())
+    user_info_with_wallets = UserInfo(**result.scalar_one_or_none())
 
     return user_info_with_wallets
