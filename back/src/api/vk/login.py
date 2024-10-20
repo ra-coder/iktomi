@@ -4,11 +4,11 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from sqlalchemy import and_, select
 
+from config import settings
 from db.connect import AsyncSessionLocal, get_async_db_session
 from db.oauth import OAuthAccount, RawExternalData
 from db.user import User
 from libs.jwt_token import JWTPayload, issue_jwt
-from config import settings
 
 vk_login_router = APIRouter()
 
@@ -26,6 +26,8 @@ class VKTokens(BaseModel):
 
 class UserInfo(BaseModel):
     id: int
+    email: str | None = None
+    name: str | None = None
 
 
 @vk_login_router.post("/api/vk/login/tokens", response_model=UserInfo)
