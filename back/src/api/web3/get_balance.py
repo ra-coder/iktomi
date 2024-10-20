@@ -8,7 +8,7 @@ from web3 import Web3
 
 from config import settings
 
-web3_router = APIRouter()
+balance_web3_router = APIRouter()
 
 
 # Contract ABI for ERC-721 (NFT standard), minimum required to interact with NFTs
@@ -61,7 +61,7 @@ class WalletInfo(BaseModel):
     balance: list[CurrencyValue]
 
 
-@web3_router.post("/api/web3/wallet-info")
+@balance_web3_router.post("/api/web3/wallet-info")
 async def get_wallet_info(wallet: WalletRequest):
     # Get wallet balance
     balance = get_eth_balance(wallet.address)

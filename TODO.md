@@ -20,7 +20,7 @@ dev TODO
    - [x] add to site
    - [X] add user to db on login
    - [X] check if user exists + glue accounts
-   - [ ] поченить редирект и авторизацию с мобилки
+   - [ ] починить редирект и авторизацию с мобилки
  - [ ] github OAuth
    - [x] register dev account
    - [x] add to site
@@ -31,10 +31,14 @@ dev TODO
  - [x] web3 connect wallet API
    - [ ] challenge wallet
    - [x] store wallet in DB
- 
+ - [ ] self-service
+   - [ ] add wallet
+   - [ ] remove wallet
+   - [ ] verify wallet
+ - [ ] logout
  
 function backlog
- - [ ] логин
+ - [x] логин
  - [x] просмотр списка пользователей на платформе
  - [X] просмотр профиля человека
  - [ ] оставить отзыв/рекомендаци о коллеге (человеке на платформе)
