@@ -1,3 +1,5 @@
+import asyncio
+
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy import func, select
@@ -62,4 +64,5 @@ async def users_info(
         info.wallets = []
     for wallet in info.wallets:
         wallet.nfts = await get_nfts(wallet.address)
+        await asyncio.sleep(0.5) # 0.5 sec  # workaround for 429 Too many requests
     return info
