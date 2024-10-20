@@ -117,15 +117,16 @@
     </main>
   <script>
     const apiUrl = "https://iktomi.pro/api/user/myself";
-    const token = localStorage.getItem('jwtToken'); // Assume JWT is stored in localStorage
 
     // Fetch user info and render it
     async function getUserInfo() {
-      const response = await fetch(apiUrl, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
+      const response = await fetch(apiUrl);
+
+        if (response.status === 401) {
+          // If the status is 401, redirect to the main page
+          window.location.href = '/'; // Redirect to main page
+          return; // Stop further execution
         }
-      });
 
       if (response.ok) {
         const data = await response.json();
@@ -157,7 +158,7 @@
 
     // Logout function
     function logout() {
-      document.cookie = "jwt_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie = "jwt_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.iktomi.pro;";
       window.location.href = '/'; // Redirect to main page
     }
 

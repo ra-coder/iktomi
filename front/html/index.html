@@ -93,6 +93,11 @@
       width: 24px;
       height: 24px;
     }
+
+    a.disabled {
+        pointer-events: none; /* Disables click */
+        color: gray; /* Makes text gray */
+    }
     </style>
 </head>
 <body>
@@ -100,7 +105,7 @@
         <nav>
             <a href="/">Main</a>
             <a href="/all-users">All Users</a>
-            <a href="/my-profile">My Profile</a>
+            <a id="profile-link" href="/my-profile">My Profile</a>
         </nav>
     </header>
     <main>
@@ -189,6 +194,39 @@
       const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=user`;
       window.location.href = githubAuthUrl;
     });
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    // Get jwt_token from cookies
+    const jwtToken = getCookie('jwt_token');
+
+    // Function to check if the token is valid (this is a basic check)
+    function isTokenExpired(token) {
+        if (!token) {
+            return true;
+        }
+
+        // Decode the token and check expiry (assuming JWT format)
+        const payloadBase64 = token.split('.')[1];
+        if (!payloadBase64) return true;
+
+        const payload = JSON.parse(atob(payloadBase64));
+        const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+
+        return payload.exp < currentTime; // Token is expired if exp < current time
+    }
+
+    // Disable "My Profile" link if no token or expired token
+    if (!jwtToken || isTokenExpired(jwtToken)) {
+        const profileLink = document.getElementById('profile-link');
+        profileLink.classList.add('disabled'); // Add disabled class
+        profileLink.removeAttribute('href'); // Remove the link functionality
+    }
+    </script>
   </script>
   </div>
 </main>
