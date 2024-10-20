@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "module": "ESNext",
+    "module": "NodeNext",         // Set module to NodeNext
     "target": "ES5",
     "allowJs": true,
     "esModuleInterop": true,
     "strict": true,
-    "moduleResolution": "nodenext", // Added to resolve Node.js modules properly
+    "moduleResolution": "NodeNext", // Must match 'module'
     "resolveJsonModule": true,
     "skipLibCheck": true
   },
