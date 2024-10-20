@@ -168,6 +168,16 @@
         .catch(error => {
           console.error('Error posting data:', error);
         });
+
+        if (!jwtToken || isTokenExpired(jwtToken)) {
+            const profileLink = document.getElementById('profile-link');
+            profileLink.classList.add('disabled'); // Add disabled class
+            profileLink.removeAttribute('href'); // Remove the link functionality
+        } else {
+            const profileLink = document.getElementById('profile-link');
+            profileLink.classList.remove('disabled');
+            profileLink.setAttribute("href", "/my-profile");
+        }
       }
 
       // Error handler
