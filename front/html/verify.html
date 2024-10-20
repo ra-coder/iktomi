@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WalletConnect Wallet Verification</title>
     <script src="https://cdn.jsdelivr.net/npm/@walletconnect/client@1.6.6/dist/umd/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
 </head>
 <body>
     <h1>Wallet Verification via WalletConnect</h1>
     <button id="verifyWalletButton">Verify Wallet Ownership</button>
+    <div id="qrcode"></div>
 
     <script>
         const walletAddress = "0xb39d9C554EfDea3382D833c7F2E2dc555D08aB82"; // Replace with the user's wallet address
@@ -28,8 +30,13 @@
             // Listen for WalletConnect URI to show QR code or deep link
             walletConnector.on("display_uri", (uri) => {
                 console.log("Scan this QR code with your mobile wallet:", uri);
-                alert(`Scan this QR code with your mobile wallet app: ${uri}`);
-                // You can generate a QR code on the screen using some QR code library or redirect user to the deep link for mobile users
+                // Generate QR code and display it on the screen
+                const qrCodeContainer = document.getElementById("qrcode");
+                qrCodeContainer.innerHTML = ""; // Clear previous QR code if any
+                QRCode.toCanvas(qrCodeContainer, uri, function (error) {
+                    if (error) console.error(error);
+                    console.log('QR code generated!');
+                });
             });
 
             // When a session is connected
