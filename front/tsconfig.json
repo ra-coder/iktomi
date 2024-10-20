@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",          // Output directory for compiled JS
+    "outDir": "./html/dist",          // Output directory for compiled JS
     "module": "ESNext",          // Module system (adjust based on your needs)
     "target": "ES5",             // Output target JavaScript version
     "allowJs": true,             // Allow compiling .js files
@@ -8,7 +8,7 @@
     "strict": true               // Enable strict type-checking options
   },
   "include": [
-    "html/*.ts",
-    "html/**/*.ts"               // Path to your TypeScript files
+    "./html/*.ts",
+    "./html/**/*.ts"               // Path to your TypeScript files
   ]
 }
