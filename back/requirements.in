@@ -11,4 +11,4 @@ httpx
 web3
 pywin32;sys_platform == 'win32'
 authlib
-jwt
+PyJWT
