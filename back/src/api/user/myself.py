@@ -1,33 +1,12 @@
-import jwt
-from fastapi import APIRouter, Depends, HTTPException, Request, Response
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlalchemy import func, select
 
 from db import User, Wallet
 from db.connect import AsyncSessionLocal, get_async_db_session
-from libs.jwt_token import JWTPayload, validate_jwt
+from libs.jwt_token import get_user_id_from_token
 
 user_myself_router = APIRouter()
-
-
-def get_user_id_from_token(request: Request, response: Response) -> int:
-    jwt_token = request.cookies.get('jwt_token')
-
-    if not jwt_token:
-        raise HTTPException(status_code=401, detail="Not authenticated")
-
-    try:
-        payload = validate_jwt(jwt_token)
-    except (
-        jwt.ExpiredSignatureError,
-        jwt.InvalidIssuerError,
-        jwt.ExpiredSignatureError,
-        jwt.InvalidTokenError,
-    ) as err:
-        response.delete_cookie("jwt_token")
-        raise HTTPException(status_code=403, detail=f"invalid Token {err}")
-
-    return payload.user_id
 
 
 class WalletInfo(BaseModel):
@@ -46,7 +25,7 @@ class UserInfo(BaseModel):
 
 @user_myself_router.get("/api/user/myself", response_model=UserInfo)
 async def get_myself(
-    token_user_id: JWTPayload = Depends(get_user_id_from_token),
+    token_user_id: int = Depends(get_user_id_from_token),
     async_db_session: AsyncSessionLocal = Depends(get_async_db_session),
 ) -> UserInfo:
     query = select(

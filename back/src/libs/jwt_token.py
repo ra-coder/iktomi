@@ -1,12 +1,16 @@
 import datetime
 
 import jwt
+from fastapi import HTTPException
 from pydantic import BaseModel
+from starlette.requests import Request
+from starlette.responses import Response
 
 from config import settings
 
 TOKEN_EXPIRATION_HOURS = 1
 JWT_ALGORITHM = "HS256"
+
 
 class JWTPayload(BaseModel):
     user_id: int
@@ -33,3 +37,23 @@ def validate_jwt(jwt_token: str) -> JWTPayload:
         raise jwt.InvalidIssuerError("Invalid issuer")
 
     return JWTPayload.model_validate(payload["user"])
+
+
+def get_user_id_from_token(request: Request, response: Response) -> int:
+    jwt_token = request.cookies.get('jwt_token')
+
+    if not jwt_token:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    try:
+        payload = validate_jwt(jwt_token)
+    except (
+        jwt.ExpiredSignatureError,
+        jwt.InvalidIssuerError,
+        jwt.ExpiredSignatureError,
+        jwt.InvalidTokenError,
+    ) as err:
+        response.delete_cookie("jwt_token")
+        raise HTTPException(status_code=403, detail=f"invalid Token {err}")
+
+    return payload.user_id
