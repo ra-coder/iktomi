@@ -4,6 +4,8 @@ FROM node:18-alpine as build
 # Set working directory
 WORKDIR /app
 
+RUN npm install vite
+
 # Copy package.json and package-lock.json (if available)
 COPY package.json /app/package.json
 
@@ -14,7 +16,8 @@ COPY ./html /app/.
 
 # If you have a build script in your package.json, you can run it here
 COPY tsconfig.json /app/tsconfig.json
-RUN npm run build
+# RUN npm run build
+RUN npx vite build
 
 # Stage 2: NGINX Serve Stage
 FROM nginx:alpine
