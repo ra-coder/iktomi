@@ -39,7 +39,7 @@ async def read_root(
 
     jwt_token = issue_jwt(JWTPayload(user_id=user.id))
 
-    response = JSONResponse(content=UserInfo(id=user.id, email=user.email, name=user.first_name))
+    response = JSONResponse(content=UserInfo(id=user.id, email=user.email, name=user.name))
     response.set_cookie(key='jwt_token', value=jwt_token, httponly=True, secure=True, domain=settings.DOMAIN)
 
     return response
@@ -54,6 +54,7 @@ async def get_or_create_user(
             User.id,
             User.email,
             User.first_name,
+            User.last_name,
         ).select_from(
             User,
         ).join(
@@ -70,8 +71,8 @@ async def get_or_create_user(
     if user_row is None:
         user = await create_vk_user(vk_tokens_data, async_db_session)
     else:
-        user_id, user_email, user_first_name = user_row
-        user = UserInfo(id=user_id, email=user_email, name=user_first_name)
+        user_id, user_email, user_first_name, user_last_name = user_row
+        user = UserInfo(id=user_id, email=user_email, name=f"{user_first_name} {user_last_name}")
     return user
 
 
@@ -104,7 +105,7 @@ async def create_vk_user(
     )
     async_db_session.add(row_data)
     await async_db_session.commit()
-    return UserInfo(id=user.id, email=user.email, name=user.first_name)
+    return UserInfo(id=user.id, email=user.email, name=f"{user.first_name} {user.last_name}")
 
 
 async def get_vk_user_info(user_access_token: str):
