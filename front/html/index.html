@@ -210,10 +210,12 @@
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
+        return null; // Return null if cookie not found
     }
 
     // Get jwt_token from cookies
     const jwtToken = getCookie('jwt_token');
+    console.log(jwtToken);
 
     // Function to check if the token is valid (this is a basic check)
     function isTokenExpired(token) {
@@ -233,9 +235,14 @@
 
     // Disable "My Profile" link if no token or expired token
     if (!jwtToken || isTokenExpired(jwtToken)) {
+        console.log('expired');
         const profileLink = document.getElementById('profile-link');
         profileLink.classList.add('disabled'); // Add disabled class
         profileLink.removeAttribute('href'); // Remove the link functionality
+    }  else {
+        const profileLink = document.getElementById('profile-link');
+        profileLink.classList.remove('disabled');
+        profileLink.setAttribute("href", "/my-profile");
     }
     </script>
   </script>
