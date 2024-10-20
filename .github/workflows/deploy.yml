@@ -29,6 +29,7 @@ jobs:
         touch .env
         echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
         echo "RPC_URL=${{ secrets.RPC_URL }}" >> .env
+        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
         scp -o StrictHostKeyChecking=no  .env ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:~/github-deploy/back/src/.env
 
     - name: Deploy Front Docker Container

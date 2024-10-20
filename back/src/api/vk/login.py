@@ -1,11 +1,13 @@
 import httpx
 from fastapi import APIRouter, Depends
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from sqlalchemy import select
 
 from db.connect import AsyncSessionLocal, get_async_db_session
 from db.oauth import OAuthAccount, RawExternalData
 from db.user import User
+from libs.jwt_token import JWTPayload, issue_jwt
 
 vk_login_router = APIRouter()
 
@@ -30,11 +32,11 @@ class UserInfo(BaseModel):
     name: str
 
 
-@vk_login_router.post("/api/vk/login/tokens")
+@vk_login_router.post("/api/vk/login/tokens", response_model=UserInfo)
 async def read_root(
     user_tokens_data: VKTokens,
     async_db_session: AsyncSessionLocal = Depends(get_async_db_session),
-) -> UserInfo:
+) -> JSONResponse:
     result = await async_db_session.execute(
         select(
             User.id,
@@ -80,7 +82,12 @@ async def read_root(
     async_db_session.add(row_data)
     await async_db_session.commit()
 
-    return UserInfo(id=user.id, email=user.email, name=user.first_name)
+    jwt_token = issue_jwt(JWTPayload(user_id=user.id))
+
+    response = JSONResponse(content=UserInfo(id=user.id, email=user.email, name=user.first_name))
+    response.set_cookie(key='jwt_token', value=jwt_token, httponly=True, secure=True)
+
+    return response
 
 
 async def get_vk_user_info(user_access_token: str):
