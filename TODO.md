@@ -25,8 +25,9 @@ dev TODO
    - [x] register dev account
    - [x] add to site
    - [ ] add user to db on login
- - [ ]  site jwt auth
-   - [ ] issue jwt on login
+ - [X]  site jwt auth
+   - [X] issue jwt on login
+   - [X] logout logic
  - [X] Add web3 API via alchemy.com
  - [x] web3 connect wallet API
    - [ ] challenge wallet
@@ -35,7 +36,6 @@ dev TODO
    - [ ] add wallet
    - [ ] remove wallet
    - [ ] verify wallet
- - [ ] logout
  
 function backlog
  - [x] логин
