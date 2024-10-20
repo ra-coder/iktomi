@@ -18,7 +18,7 @@ class WalletInfo(BaseModel):
     is_confirmed: bool
 
 
-@add_user_wallet_router.post("/api/user/myself", response_model=WalletInfo)
+@add_user_wallet_router.post("/api/user/add_wallet", response_model=WalletInfo)
 async def get_myself(
     payload: WalletAddress,
     token_user_id: int = Depends(get_user_id_from_token),

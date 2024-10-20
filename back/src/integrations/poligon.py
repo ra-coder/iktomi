@@ -1,3 +1,5 @@
+import asyncio
+
 import httpx
 from pydantic import BaseModel
 
@@ -82,4 +84,13 @@ async def get_nfts(owner_address) -> NFTData:
         if response.status_code == 200:
             nfts_data = response.json()
             return NFTData.model_validate(nfts_data)
+
+        if response.status_code == 429:  # Too Many Requests
+            await asyncio.sleep(5) # 5 sec
+            response = await client.get(f"{settings.RPC_URL}/getNFTs", params={"owner": owner_address})
+            # Check if the request was successful
+            if response.status_code == 200:
+                nfts_data = response.json()
+                return NFTData.model_validate(nfts_data)
+
         raise RuntimeError("bad request from alchemy RPC_URL")
