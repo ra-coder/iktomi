@@ -5,16 +5,16 @@ FROM node:18-alpine as build
 WORKDIR /app
 
 # Copy package.json and package-lock.json (if available)
-COPY package.json ./
+COPY package.json /app/package.json
 
 # Install the necessary dependencies
 RUN npm install @reown/appkit @reown/appkit-adapter-wagmi wagmi viem @tanstack/react-query
 
 # Copy the rest of the application code
-COPY ./html ./
+COPY ./html /app/.
 
 # If you have a build script in your package.json, you can run it here
-COPY tsconfig.json ./
+COPY tsconfig.json /app/tsconfig.json
 RUN npm run build
 
 # Stage 2: NGINX Serve Stage
