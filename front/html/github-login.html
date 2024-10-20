@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-image: url('wallpaper.webp');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        header {
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #ffcc00;
+        }
+
+        main {
+            margin-top: 80px;
+            width: 80%;
+            max-width: 600px;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .profile-detail {
+            margin: 10px 0;
+        }
+
+        .profile-detail span {
+            font-weight: bold;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ffcc00;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #e6b800;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Main</a>
+            <a href="/all-users">All Users</a>
+            <a href="/my-profile">My Profile</a>
+        </nav>
+    </header>
+    <main>
+    <h1>Auth via Github in progress</h1>
+    <pre id="user-info"></pre>
+    <script>
+    // Step 2: Handle GitHub Redirect (Authorization Code)
+    window.onload = async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('code');
+
+      if (code) {
+        document.getElementById('user-info').textContent = 'Exchanging code for access token...';
+
+        // Step 3: Exchange Authorization Code for Access Token (via a backend or serverless function)
+        const token = await fetchAccessToken(code);
+        if (token) {
+          const userData = await fetchGitHubUser(token);
+          document.getElementById('user-info').textContent = JSON.stringify(userData, null, 2);
+        }
+      }
+    };
+
+    // Fetch Access Token (Step 3)
+    async function fetchAccessToken(code) {
+      try {
+        // Call your backend server to exchange the code for a token
+        const response = await fetch('https://iktomi.pro/api/github/login/tokens', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: code })
+        });
+        const data = await response.json();
+        return data.access_token;
+      } catch (error) {
+        console.error('Error fetching access token:', error);
+      }
+    }
+    </script>
+    </main>
+</body>
+</html>

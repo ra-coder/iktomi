@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In Development</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-image: url('wallpaper.webp');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        header {
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #ffcc00;
+        }
+
+        main {
+            margin-top: 80px;
+            width: 80%;
+            max-width: 600px;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+    /* Styling the github Login button */
+    #login-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      background-color: #24292f;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.1s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Add hover and active effects */
+    #login-btn:hover {
+      background-color: #333940;
+    }
+
+    #login-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* GitHub icon styling */
+    #login-btn img {
+      width: 24px;
+      height: 24px;
+    }
+
+    a.disabled {
+        pointer-events: none; /* Disables click */
+        color: gray; /* Makes text gray */
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Main</a>
+            <a href="/all-users">All Users</a>
+            <a id="profile-link" href="/my-profile">My Profile</a>
+        </nav>
+    </header>
+    <main>
+    <h1>In development, be patient pls.</h1>
+    <h2>Pls login, don't worry it is safe.</h2>
+    <div style="background-color: #2b2b2b; padding: 20px; border-radius: 10px;">
+      <script src="https://unpkg.com/@vkid/sdk@<3.0.0/dist-sdk/umd/index.js"></script>
+      <script type="text/javascript">
+        if ('VKIDSDK' in window) {
+          const VKID = window.VKIDSDK;
+
+          VKID.Config.init({
+            app: 52467648,
+            redirectUrl: 'https://iktomi.pro/vk-login',
+            responseMode: VKID.ConfigResponseMode.Callback,
+            source: VKID.ConfigSource.LOWCODE,
+          });
+
+          const oneTap = new VKID.OneTap();
+
+          oneTap.render({
+            container: document.currentScript.parentElement,
+            scheme: 'dark',
+            lang: 3,
+            showAlternativeLogin: true,
+            skin: 'secondary',
+            oauthList: [
+              'mail_ru'
+            ]
+          })
+          .on(VKID.WidgetEvents.ERROR, vkidOnError)
+          .on(VKID.OneTapInternalEvents.LOGIN_SUCCESS, function (payload) {
+            const code = payload.code;
+            const deviceId = payload.device_id;
+
+            VKID.Auth.exchangeCode(code, deviceId)
+              .then(vkidOnSuccess)
+              .catch(vkidOnError);
+          });
+        }
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null; // Return null if cookie not found
+        }
+
+        // Function to check if the token is valid (this is a basic check)
+        function isTokenExpired(token) {
+            if (!token) {
+                return true;
+            }
+
+            // Decode the token and check expiry (assuming JWT format)
+            const payloadBase64 = token.split('.')[1];
+            if (!payloadBase64) return true;
+
+            const payload = JSON.parse(atob(payloadBase64));
+            const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+
+            return payload.exp < currentTime; // Token is expired if exp < current time
+        }
+
+      function vkidOnSuccess(data) {
+        console.log('Login Success:', data);  // Logs the response for debugging
+
+        // Define your endpoint URL to which data should be sent
+        const endpoint = 'https://iktomi.pro/api/vk/login/tokens';
+
+        // Send the response data as a POST request
+        fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(result => {
+          console.log('Data successfully sent:', result);
+        })
+        .catch(error => {
+          console.error('Error posting data:', error);
+        });
+
+        const jwtToken = getCookie('jwt_token');
+        if (!jwtToken || isTokenExpired(jwtToken)) {
+            const profileLink = document.getElementById('profile-link');
+            profileLink.classList.add('disabled'); // Add disabled class
+            profileLink.removeAttribute('href'); // Remove the link functionality
+        } else {
+            const profileLink = document.getElementById('profile-link');
+            profileLink.classList.remove('disabled');
+            profileLink.setAttribute("href", "/my-profile");
+        }
+      }
+
+      // Error handler
+      function vkidOnError(error) {
+        console.error('Login Error:', error);  // Logs the error for debugging
+      }
+      </script>
+    </div>
+    <h2>Or you can (sorry not finished yet !!!)</h2>
+     <div style="background-color: #2b2b2b; padding: 20px; border-radius: 10px;">
+      <div class="container">
+        <button id="login-btn">
+          <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo">
+          Login with GitHub
+        </button>
+      </div>
+
+  <script>
+    const CLIENT_ID = 'Ov23lin4GfC1NKNE4u6p';  // Replace with your GitHub Client ID
+    const REDIRECT_URI = 'https://iktomi.pro/github-login';  // Replace with your callback URL
+
+    // Step 1: Redirect to GitHub for OAuth Login
+    document.getElementById('login-btn').addEventListener('click', () => {
+      const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=user`;
+      window.location.href = githubAuthUrl;
+    });
+
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return null; // Return null if cookie not found
+    }
+
+    // Function to check if the token is valid (this is a basic check)
+    function isTokenExpired(token) {
+        if (!token) {
+            return true;
+        }
+
+        // Decode the token and check expiry (assuming JWT format)
+        const payloadBase64 = token.split('.')[1];
+        if (!payloadBase64) return true;
+
+        const payload = JSON.parse(atob(payloadBase64));
+        const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+
+        return payload.exp < currentTime; // Token is expired if exp < current time
+    }
+
+    // Get jwt_token from cookies
+    const jwtToken = getCookie('jwt_token');
+    console.log(jwtToken);
+
+
+    // Disable "My Profile" link if no token or expired token
+    if (!jwtToken || isTokenExpired(jwtToken)) {
+        console.log('expired');
+        const profileLink = document.getElementById('profile-link');
+        profileLink.classList.add('disabled'); // Add disabled class
+        profileLink.removeAttribute('href'); // Remove the link functionality
+    }  else {
+        const profileLink = document.getElementById('profile-link');
+        profileLink.classList.remove('disabled');
+        profileLink.setAttribute("href", "/my-profile");
+    }
+  </script>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WalletConnect Wallet Verification</title>
+    <script src="https://cdn.jsdelivr.net/npm/@walletconnect/client@1.6.6/dist/umd/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+    <style>
+        #qrcode {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Wallet Verification via WalletConnect</h1>
+
+    <!-- Input field for wallet address -->
+    <label for="walletAddressInput">Enter Wallet Address:</label>
+    <input type="text" id="walletAddressInput" placeholder="0x..." />
+
+    <button id="verifyWalletButton">Verify Wallet Ownership</button>
+
+    <!-- Container to display the QR code -->
+    <div id="qrcode"></div>
+
+    <script>
+        walletKit.on("auth_request", async (authRequest) => {
+          const { verifyContext } = authRequest
+          const validation = verifyContext.verified.validation // can be VALID, INVALID or UNKNOWN
+          const origin = verifyContext.verified.origin // the actual verified origin of the request
+          const isScam = verifyContext.verified.isScam // true if the domain is flagged as malicious
+
+          // if the domain is flagged as malicious, you should warn the user as they may lose their funds - check the `Threat` case for more info
+          if(isScam) {
+            // show a warning screen to the user
+            // and proceed only if the user accepts the risk
+          }
+
+          switch(validation) {
+            case "VALID":
+              // proceed with the request - check the `Domain match` case for more info
+              break
+            case "INVALID":
+              // show a warning dialog to the user - check the `Mismatch` case for more info
+              // and proceed only if the user accepts the risk
+              break
+            case "UNKNOWN":
+              // show a warning dialog to the user - check the `Unverified` case for more info
+              // and proceed only if the user accepts the risk
+              break
+          }
+        })
+
+        async function verifyWalletOwnership() {
+            const walletAddress = document.getElementById('walletAddressInput').value.trim(); // Get wallet address from input field
+
+            if (!walletAddress) {
+                alert('Please enter a valid wallet address.');
+                return;
+            }
+
+            // Initialize WalletConnect
+            const walletConnector = new WalletConnect.default({
+                bridge: 'https://bridge.walletconnect.org' // You can use any WalletConnect bridge
+            });
+
+            // Check if WalletConnect session already exists
+            if (!walletConnector.connected) {
+                // Create a new session
+                walletConnector.createSession();
+            }
+
+            // Listen for WalletConnect URI to show QR code or deep link
+            walletConnector.on("display_uri", (uri) => {
+                console.log("Scan this QR code with your mobile wallet:", uri);
+                // Generate QR code and display it on the screen
+                const qrCodeContainer = document.getElementById("qrcode");
+                qrCodeContainer.innerHTML = ""; // Clear previous QR code if any
+                QRCode.toCanvas(qrCodeContainer, uri, function (error) {
+                    if (error) console.error(error);
+                    console.log('QR code generated!');
+                });
+            });
+
+            // When a session is connected
+            walletConnector.on("connect", async (error, payload) => {
+                if (error) {
+                    throw error;
+                }
+
+                // Get the user's wallet account
+                const { accounts } = payload.params[0];
+                const account = accounts[0];
+
+                // Fetch challenge from backend
+                const response = await fetch(`https://iktomi.pro/generate_challenge/${walletAddress}`);
+                const data = await response.json();
+                const challenge = data.challenge;
+
+                // Request the user to sign the challenge using WalletConnect
+                const msgParams = {
+                    type: 'personal_sign',
+                    params: [challenge, account],
+                    from: account
+                };
+
+                try {
+                    const signature = await walletConnector.sendCustomRequest(msgParams);
+
+                    // Send the signature and wallet address to the backend for verification
+                    const verificationResponse = await fetch('https://iktomi.pro/api/web3/verify_signature', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            wallet_address: walletAddress,
+                            signature: signature
+                        })
+                    });
+
+                    const verificationResult = await verificationResponse.json();
+
+                    if (verificationResponse.ok) {
+                        alert(verificationResult.message);
+                    } else {
+                        alert('Verification failed: ' + verificationResult.detail);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('An error occurred during verification.');
+                }
+            });
+
+            // Disconnect listener
+            walletConnector.on("disconnect", (error, payload) => {
+                if (error) {
+                    throw error;
+                }
+                alert('Disconnected from WalletConnect');
+            });
+        }
+
+        document.getElementById('verifyWalletButton').addEventListener('click', verifyWalletOwnership);
+    </script>
+</body>
+</html>

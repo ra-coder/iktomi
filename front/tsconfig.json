@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "module": "ESNext",             // This is fine for modern module systems (ESM)
+    "target": "ES5",                // Target older JavaScript version for compatibility
+    "allowJs": true,                // Allow JS files to be compiled as well
+    "esModuleInterop": true,        // Handle interop between CommonJS and ES modules
+    "strict": true,                 // Enable all strict type checking options
+    "moduleResolution": "Node",     // Use Node module resolution for NPM and modern JS packages
+    "resolveJsonModule": true,      // Allow importing JSON files
+    "skipLibCheck": true            // Skip type checking for declaration files
+  },
+  "include": [
+    "./**/*.ts"                     // Include all TypeScript files
+  ]
+}

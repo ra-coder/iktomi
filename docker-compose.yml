@@ -1,0 +1,75 @@
+services:
+  iktomi-front:
+    image: iktomi-front:latest
+    container_name: iktomi-front
+    build:
+      context: front
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - letsencrypt-data:/etc/letsencrypt
+      - certbot-data:/var/www/certbot
+    networks:
+      - iktomi
+    depends_on:
+      # - certbot
+      - iktomi-back
+
+  certbot:
+    image: iktomi-certbot:latest
+    container_name: certbot
+    build:
+      context: front
+      dockerfile: certbot.Dockerfile
+    volumes:
+      - letsencrypt-data:/etc/letsencrypt
+      - certbot-data:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do sleep 12h & wait $${!}; certbot renew; done'"
+    networks:
+      - iktomi
+
+  iktomi-back:
+    image: iktomi-back:latest
+    container_name: iktomi-back
+    build:
+      context: back
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - iktomi
+    depends_on:
+      - iktomi-postgres
+
+  iktomi-postgres:
+    image: postgres:latest
+    container_name: iktomi-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: iktomi
+      POSTGRES_PASSWORD: iktomi
+      POSTGRES_DB: iktomi
+    networks:
+      - iktomi
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+#  app:
+#    image: your-app-image:latest
+#    container_name: your-app
+#    environment:
+#      - PORT=8000  # Or any port your app uses
+#    networks:
+#      - webnet
+
+networks:
+  iktomi:
+
+volumes:
+  certbot-data:
+  letsencrypt-data:
+  postgres_data:

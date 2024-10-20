@@ -1,0 +1,14 @@
+fastapi
+pydantic[dotenv]>2.0
+pydantic_settings
+uvicorn
+sqlalchemy[asyncio]>2.0
+asyncpg
+psycopg2-binary
+alembic
+sentry-sdk[fastapi]
+httpx
+web3
+pywin32;sys_platform == 'win32'
+authlib
+PyJWT

