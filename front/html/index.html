@@ -169,6 +169,7 @@
           console.error('Error posting data:', error);
         });
 
+        const jwtToken = getCookie('jwt_token');
         if (!jwtToken || isTokenExpired(jwtToken)) {
             const profileLink = document.getElementById('profile-link');
             profileLink.classList.add('disabled'); // Add disabled class
