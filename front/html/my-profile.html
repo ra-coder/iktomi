@@ -156,8 +156,8 @@
 
     // Logout function
     function logout() {
-      localStorage.removeItem('jwtToken'); // Remove JWT token
-      window.location.href = '/login'; // Redirect to login page
+      document.cookie = "jwt_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      window.location.href = '/'; // Redirect to main page
     }
 
     // Add wallet function (for demo, this just simulates wallet adding)
