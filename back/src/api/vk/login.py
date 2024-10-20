@@ -40,7 +40,7 @@ async def read_root(
     jwt_token = issue_jwt(JWTPayload(user_id=user.id))
 
     response = JSONResponse(content=UserInfo(id=user.id, email=user.email, name=user.first_name))
-    response.set_cookie(key='jwt_token', value=jwt_token, httponly=True, secure=True)
+    response.set_cookie(key='jwt_token', value=jwt_token, httponly=True, secure=True, domain=settings.DOMAIN)
 
     return response
 
